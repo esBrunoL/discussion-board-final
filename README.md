@@ -32,7 +32,7 @@ A full-stack discussion board application built with Next.js, React, and MongoDB
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/esBrunoL/discussion-board-final.git
 cd DiscussionBoard
 
 # Install dependencies
