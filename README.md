@@ -1,3 +1,142 @@
+
+This project was created with the assistance of Copilot AI with Claude Sonnet 4 model.
+Thru the prompt:
+"
+## Project Overview  
+Create a full-stack Discussion Board application with:  
+- Frontend in React (HTML, CSS, JavaScript)  
+- Backend in Java using Spring Boot  
+- MongoDB for data storage  
+- GitHub for version control  
+- Visual Studio Code as the IDE  
+
+---
+
+## Functional Requirements  
+
+### 1. User Authentication  
+1. **Registration**  
+   - Endpoint: `POST /api/auth/register`  
+   - Payload:  
+     - `email` (unique, valid email)  
+     - `password` (min. 8 chars, ≥1 uppercase, ≥1 lowercase, ≥1 digit; encrypted at rest)  
+     - `firstName`  
+     - `lastName`  
+     - `phoneNumber` (10 digits)  
+   - Server validates input, hashes password, stores user in MongoDB.  
+
+2. **Login**  
+   - Endpoint: `POST /api/auth/login`  
+   - Payload: `email`, `password`  
+   - On success, issues a JWT for subsequent requests.  
+
+3. **Password Reset**  
+   - “I forgot my password” button on login page  
+   - Endpoint: `POST /api/auth/forgot-password`  
+   - Payload: `email`, `phoneNumber`  
+   - If matched, allow setting a new password at `POST /api/auth/reset-password`.  
+
+### 2. Discussion Subjects  
+1. **List Subjects**  
+   - Endpoint: `GET /api/subjects?page={n}&size=10`  
+   - Returns newest 10 subjects with pagination.  
+   - Each item: `title`, `authorEmail`, `createdAt`.  
+
+2. **Create Subject**  
+   - Endpoint: `POST /api/subjects`  
+   - Payload:  
+     - `title` (≤ 100 chars)  
+     - `description` (≤ 1000 chars)  
+   - Adds `authorEmail` and timestamp server-side.  
+
+3. **View Subject Details**  
+   - Endpoint: `GET /api/subjects/{subjectId}`  
+   - Returns subject metadata plus its comments.  
+
+### 3. Comments  
+- Endpoint: `POST /api/subjects/{subjectId}/comments`  
+- Payload:  
+  - `text` (≤ 244 chars)  
+- Server attaches `authorEmail` and timestamp.  
+- Flat structure (no replies-to-replies).
+
+---
+
+## Data Models (MongoDB Schemas)  
+
+| Schema   | Fields                                            |
+|----------|---------------------------------------------------|
+| **User** | `firstName`; `lastName`; `email`; `passwordHash`; `phoneNumber` |
+| **Subject** | `title`; `description`; `authorEmail`; `createdAt`        |
+| **Comment** | `subjectId`; `text`; `authorEmail`; `createdAt`           |
+
+---
+
+## Frontend Structure  
+- **Pages/Routes**  
+  1. `/login`  
+  2. `/register`  
+  3. `/forgot-password`  
+  4. `/subjects` (listing + pagination)  
+  5. `/subjects/new`  
+  6. `/subjects/:id` (detail + comments)  
+
+- **State Management**  
+  - React Context or Redux for auth token and user info.  
+  - Fetch subjects and comments via `fetch` or `axios`.  
+
+- **Styling**  
+  - CSS Modules or styled-components.  
+  - Responsive layout with full-screen list, scroll as needed.  
+
+---
+
+## Backend Structure  
+- **Packages**  
+  - `com.example.discussionboard.auth`  
+  - `com.example.discussionboard.users`  
+  - `com.example.discussionboard.subjects`  
+  - `com.example.discussionboard.comments`  
+- **Security**  
+  - Use Spring Security for JWT filter.  
+  - Input validation with Hibernate Validator.  
+- **Documentation**  
+  - Swagger/OpenAPI for all endpoints.  
+
+---
+
+## Project Setup & Documentation  
+1. **Root README.md**  
+   - Project overview  
+   - Prerequisites (Java, Node.js, MongoDB)  
+   - Setup and run instructions  
+
+2. **Folder-level README.md**  
+   - Purpose of each module (`/frontend`, `/backend`)  
+   - How to build, test, and deploy that module  
+
+3. **Code Comments**  
+   - Javadoc for Java classes and methods  
+   - Inline comments for complex logic in both JS and Java  
+
+---
+
+## Suggestions for Further Improvements  
+- Add unit and integration tests (JUnit, React Testing Library).  
+- Implement role-based access (e.g., admin can delete subjects/comments).  
+- Introduce real-time updates with WebSockets or Server-Sent Events.  
+- Provide search/filtering on subjects (by keyword, author, date).  
+- Configure GitHub Actions to automate linting, testing, and deployment.  
+- Use environment variables (`.env`) for secrets (JWT key, DB URI).  
+- Implement rate limiting on APIs to prevent abuse.  
+- Add pagination controls on the frontend (next/previous buttons with page numbers).
+
+"
+
+After the first creation, I had to switch the languages and frameworks to make it run.
+I realized that my computer, which runs the ARMx64 windows, does not deals well with the frameworks requested on the begging, so made some updates with more AI assistance and learning each step.  Check my updates at (## Updates made by Bruno Lobo (Main developer))
+
+
 # Discussion Board Application
 
 A full-stack discussion board application built with Next.js, React, and MongoDB with advanced features including user authentication, like/dislike system, and phone number registration.
@@ -13,6 +152,8 @@ A full-stack discussion board application built with Next.js, React, and MongoDB
 - **Responsive Design**: Mobile-first responsive UI
 - **Real-time Updates**: Live updates for likes/dislikes
 
+
+## Updates made by Bruno Lobo (Main developer)
 ### New Features Added (Latest Update)
 - ✅ **Phone Number Registration**: Optional phone field in user registration
 - ✅ **Like/Dislike System**: Vote on topics and comments with smart counter logic
